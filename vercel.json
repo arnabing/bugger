@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 300,
+      "memory": 1024
+    }
+  },
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic-api-key",
+    "GITHUB_TOKEN": "@github-token",
+    "LINEAR_API_KEY": "@linear-api-key",
+    "LINEAR_WEBHOOK_SECRET": "@linear-webhook-secret",
+    "GITHUB_REPOSITORY": "@github-repository"
+  }
+}
