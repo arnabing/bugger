@@ -1,0 +1,35 @@
+{
+  "name": "ai-bugfixer",
+  "version": "0.1.0",
+  "description": "AI-powered bug fixing agent that creates PRs from Linear issues",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch api/webhook.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts",
+    "test": "jest",
+    "cli": "tsx cli.ts"
+  },
+  "keywords": ["ai", "bug-fixer", "linear", "github", "automation"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@octokit/rest": "^21.0.2",
+    "@vercel/blob": "^0.27.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
+    "eslint": "^9.15.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
