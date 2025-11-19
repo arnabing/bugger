@@ -141,13 +141,13 @@ function shouldProcessIssue(payload: LinearWebhookPayload): boolean {
 
 /**
  * Extract GitHub repo info from Linear issue
- * This assumes the issue has a GitHub URL in the description or metadata
+ * Supports multiple repos via team mapping
  */
 function extractRepoInfo(payload: LinearWebhookPayload): {
   owner: string;
   repo: string;
 } | null {
-  // Option 1: Parse from issue description
+  // Option 1: Parse from issue description (GitHub URL)
   const description = payload.data.description || '';
   const githubUrlMatch = description.match(/github\.com\/([^\/]+)\/([^\/\s]+)/);
 
@@ -158,7 +158,22 @@ function extractRepoInfo(payload: LinearWebhookPayload): {
     };
   }
 
-  // Option 2: Use environment variable (simpler for single-repo setup)
+  // Option 2: Map Linear team to GitHub repo (multi-repo support)
+  const teamKey = payload.data.team?.name || payload.data.team?.id || '';
+  const repoMapping = process.env.REPO_MAPPING; // Format: "NAV=owner/nav,API=owner/api"
+
+  if (repoMapping && teamKey) {
+    const mappings = repoMapping.split(',');
+    for (const mapping of mappings) {
+      const [team, repo] = mapping.split('=');
+      if (team.trim().toLowerCase() === teamKey.toLowerCase()) {
+        const [owner, repoName] = repo.trim().split('/');
+        return { owner, repo: repoName };
+      }
+    }
+  }
+
+  // Option 3: Use environment variable (single-repo setup)
   const repoEnv = process.env.GITHUB_REPOSITORY; // Format: "owner/repo"
   if (repoEnv) {
     const [owner, repo] = repoEnv.split('/');
